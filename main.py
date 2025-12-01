@@ -283,4 +283,10 @@ def predict_npm(input_data: PredictionInput):
 # ===========================
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import os
+
+    # Ambil port dari environment variable (Railway) atau default ke 8000
+    port = int(os.environ.get("PORT", 8000))
+
+    # Jalankan uvicorn dengan host 0.0.0.0 agar bisa diakses dari luar
+    uvicorn.run(app, host="0.0.0.0", port=port)
