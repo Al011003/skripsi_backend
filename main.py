@@ -23,7 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+@app.on_event("startup")
+async def startup_event():
+    print("🚀 Application startup complete, ready to accept requests")
 # ===========================
 # LOAD MODELS & ENCODER
 # ===========================
