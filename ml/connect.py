@@ -1,29 +1,37 @@
 from sqlalchemy import create_engine
 import pandas as pd
+import os
+from urllib.parse import quote_plus
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def get_engine():
-    user = "admin"
-    password = "admin123"
-    host = "localhost"
-    db = "securities_db"
+    user = "postgres"  # default user di Supabase
+    password = os.environ.get("SUPABASE_DB_PASSWORD")  # password dari Supabase Settings → Database
+    host = os.environ.get("SUPABASE_DB_HOST")          # misal: abcd1234.postgres.supabase.co
+    db = "postgres"                                    
 
-    return create_engine(f"mysql+pymysql://{user}:{password}@{host}/{db}")
+    # encode password supaya aman (jika ada karakter khusus)
+    password = quote_plus(password)
+
+    return create_engine(f"postgresql://{user}:{password}@{host}:5432/{db}")
 
 def load_financial_data():
     engine = get_engine()
 
     query = """
         SELECT 
-            `tahun`,
-            `kode_perusahaan`,
-            `kuartal`,
-            `NPM`,
-            `revneg`,
-            `netprofneg`,
-            `ihsg`,
-            `lq45`,
-            `netprofit`,
-            `revenue`
+            tahun,
+            kode_perusahaan,
+            kuartal,
+            NPM,
+            revneg,
+            netprofneg,
+            ihsg,
+            lq45,
+            netprofit,
+            revenue
         FROM NPM;
     """
 
